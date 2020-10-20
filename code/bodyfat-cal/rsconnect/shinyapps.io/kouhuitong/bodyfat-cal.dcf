@@ -5,8 +5,8 @@ account: kouhuitong
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2969016
-bundleId: 3715909
+bundleId: 3762055
 url: https://kouhuitong.shinyapps.io/bodyfat-cal/
-when: 1602140518.97147
+when: 1603192290.86643
 asMultiple: FALSE
 asStatic: FALSE

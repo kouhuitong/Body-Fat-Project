@@ -8,7 +8,8 @@
 #
 
 library(shiny)
-f <- function(x) { x[1]^2 + x[2]^3 }
+f <- function(x) { -10.215+0.019*x[1] - 0.256*x[2] + 0.601*x[3] - 0.510*x[4]}
+
 ui <- fluidPage(
     titlePanel("Body Fat Calculator"),
     ## Code you should write. No unique answer
@@ -24,10 +25,14 @@ ui <- fluidPage(
                ##change the title here
                #div(style="display: inline-block; vertical-align:top; text-align:center; width: 100%;",
                #strong("Body Fat Calculator")),
-               numericInput("n1", label = h3("Numeric input 1"), value = 1,min = 0),
-               numericInput("n2", label = h3("Numeric input 2"), value = 2,min = 0),
-               numericInput("n3", label = h3("Numeric input 3"), value = 3,min = 0),
-               numericInput("n4", label = h3("Numeric input 4"), value = 4,min = 0),
+               selectInput("gender", label = h3("Gender"), 
+                           choices = list("Male" = 1, "Female" = 2), 
+                           selected = 1),
+               
+               numericInput("n1", label = h3("Age (years)"), value = 25,min = 1),
+               numericInput("n2", label = h3("Height (inches)"), value = 65,min = 20),
+               numericInput("n3", label = h3("Abdomen 2 circumference (cm)"), value = 70,min = 40),
+               numericInput("n4", label = h3("Wrist circumference (cm)"), value = 15,min = 10),
                
                # br(),
                # ##put input boxes here
@@ -67,7 +72,7 @@ ui <- fluidPage(
         #### put output here ####
         column(8, 
                tabsetPanel(
-                   tabPanel("Result", textOutput("text")),
+                   tabPanel("Result", textOutput("text"),textOutput("text2")),
                    tabPanel("Help",textOutput("help") ),
                    tabPanel("Contact Us",textOutput("contact"))
                    # tabPanel("Code", withMathJax(), 
@@ -80,12 +85,40 @@ ui <- fluidPage(
     hr()
 )
 
+
+
+
 server <- function(input, output) {
     # `value` will in the output
     output$value = renderPrint({
-        f(c(input$n1, input$n2))
+        f(c(input$n1, input$n2,input$n3, input$n4))
     })
-    output$text <- renderText({ ifelse((!is.na(input$n1))&(!is.na(input$n2)),f(c(input$n1, input$n2)),'Please input all the values') })
+
+    
+    output$text <- renderText({ ifelse((!is.na(input$n1))&(!is.na(input$n2))&(!is.na(input$n3))&(!is.na(input$n4)),
+                                    paste('Your body fat percentage is',f(c(input$n1, input$n2,input$n3, input$n4)),'%'),
+                                    'Please input all the values')})
+    output$text2 <- renderText({ if (input$gender==1) {
+        #male
+        if (f(c(input$n1, input$n2,input$n3, input$n4)) > 25){
+            paste('Your body fat percentage is above average level in men.')
+        }
+        else if (f(c(input$n1, input$n2,input$n3, input$n4)) < 18) {
+            paste('Your body fat percentage is below average level in men.')
+        }
+        else { paste('Your body fat percentage is about average level in men.')}
+    }
+        else {
+            #female
+            if (f(c(input$n1, input$n2,input$n3, input$n4)) > 31){
+                paste('Your body fat percentage is above average level in women.')
+            }
+            else if (f(c(input$n1, input$n2,input$n3, input$n4)) < 25) {
+                paste('Your body fat percentage is below average level in women.')
+            }
+            else { paste('Your body fat percentage is about average level in women.')}
+        }
+        })
     output$contact <- renderText({ 'Feel free to contact us at hkou2@wisc.edu !' })
     output$help <- renderText({ 'See details here: https://github.com/kouhuitong/Body-Fat-Project' })
 }
