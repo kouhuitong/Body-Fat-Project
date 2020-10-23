@@ -1,17 +1,21 @@
 # Body-Fat-Project
 STAT628-Module2-Group11
 ## Goal
-Accurate measurement of body fat is inconvenient/costly and it is desirable to have easy methods of estimating body fat that are not inconvenient/costly. In this project, your group will come up with a simple, robust, and accurate “rule-of-thumb” to estimate percentage of body fat using clinically available measurements. Your “rule-of-thumb” will be based on a real data set of 252 men with measurements of their percentage of body fat and various body circumference measurements.
+Accurate measurement of body fat is inconvenient/costly and it is desirable to have easy methods of estimating body fat that are not inconvenient/costly. 
+
+In this project, we want to come up with a simple, robust, and accurate “rule-of-thumb” to estimate percentage of body fat using clinically available measurements. This “rule-of-thumb” is be based on a real data set of 252 men with measurements of their percentage of body fat and various body circumference measurements.
 
 ## Summary
-`xxx.ipynb` is an summary of our modeling process in a Jupyter Notebook.
+`xxx.pdf` is an summary of our modeling process.
 
-Our model is based on xxx and A, B, C, D are involved in the model.
+We firstly removed some outliers by the boxplot and then tested the multi-colinearity. Next, we used three different methods to handle the multi-colinearity and selected the models. Finally, R-squared, residuals and some other assumptions were checked.
 
-There are xxx folders providing more details.
+Please see details in the summary file.
 
 ## Code
-There are n R code files:
+There are R code files in the code director. 
+
+`bodyfat-model.R` is the code for modeling and the `app.R` is for building the app.
 
 ## Data
 `BodyFat.csv` is the raw data set of available measurements include age, weight, height, bmi, and various body circumference measurements. In particular, the variables listed below (from left to right in the data set) are:

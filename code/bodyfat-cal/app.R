@@ -11,7 +11,7 @@ library(shiny)
 f <- function(x) { -10.215+0.019*x[1] - 0.256*x[2] + 0.601*x[3] - 0.510*x[4]}
 
 ui <- fluidPage(
-    titlePanel("Body Fat Calculator"),
+    titlePanel("Body Fat Calculator (Men Only)"),
     ## Code you should write. No unique answer
     hr(),
     #verbatimTextOutput("value"),
@@ -26,7 +26,7 @@ ui <- fluidPage(
                #div(style="display: inline-block; vertical-align:top; text-align:center; width: 100%;",
                #strong("Body Fat Calculator")),
                selectInput("gender", label = h3("Gender"), 
-                           choices = list("Male" = 1, "Female" = 2), 
+                           choices = list("Male" = 1), 
                            selected = 1),
                
                numericInput("n1", label = h3("Age (years)"), value = 25,min = 1),
