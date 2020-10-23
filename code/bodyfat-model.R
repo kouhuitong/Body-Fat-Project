@@ -190,8 +190,10 @@ mse.min_en <- elastic_mod$cvm[iii_en]
 mse.min_en
 
 elastic_pred <- predict(elastic_mod, XX, nfolds=20)
-rsq_enet <- cor(BFAT, elastic_pred )^2  #r square
-rsq_enet
+data.frame(
+  RMSE = RMSE(elastic_pred, BFAT),
+  Rsquare = R2(elastic_pred, BFAT)
+)
 
 # Get fitted values and residuals
 BFAT_fitted <- as.vector(predict(elastic_mod, newx = XX))
