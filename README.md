@@ -36,5 +36,5 @@ There are n R code files:
 
 ## Authors
 - Huitong Kou - (hkou2@wisc.edu)
-- Fengxia Dong - (@wisc.edu)
+- Fengxia Dong - (fdong6@wisc.edu)
 - Haohao Su -　(hsu69@wisc.edu)
