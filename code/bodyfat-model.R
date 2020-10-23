@@ -160,16 +160,17 @@ train_cont <- trainControl(method = "repeatedcv",
                            search = "random",
                            verboseIter = TRUE)
 # Train the model
+set.seed(123)
 Fat_elastic <- train(BODYFAT~AGE
                      +WEIGHT
                      +HEIGHT
                      +ADIPOSITY
                      +NECK+CHEST+ABDOMEN+HIP
                      +THIGH+KNEE+ANKLE+BICEPS+FOREARM+WRIST,
-                     data = data_tr,
+                     data = Fatdata_new,
                      method = "glmnet",
                      preProcess = c("center", "scale"),
-                     tuneLength = 25,  #search 20 alpha values and 20 lambda values for each  
+                     tuneLength = 20,  #search 20 alpha values and 20 lambda values for each  
                      trControl = train_cont)
 
 
@@ -188,6 +189,9 @@ iii_en <- which(elastic_mod$lambda == elastic_mod$lambda.min)
 mse.min_en <- elastic_mod$cvm[iii_en]
 mse.min_en
 
+elastic_pred <- predict(elastic_mod, XX, nfolds=20)
+rsq_enet <- cor(BFAT, elastic_pred )^2  #r square
+rsq_enet
 
 # Get fitted values and residuals
 BFAT_fitted <- as.vector(predict(elastic_mod, newx = XX))
