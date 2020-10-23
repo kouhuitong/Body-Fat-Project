@@ -12,6 +12,10 @@ We firstly removed some outliers by the boxplot and then tested the multi-coline
 
 Please see details in the summary file.
 
+## App
+
+Our shiny web-based app can be accessed on https://kouhuitong.shinyapps.io/bodyfat-cal/ .
+
 ## Code
 There are R code files in the code director. 
 
