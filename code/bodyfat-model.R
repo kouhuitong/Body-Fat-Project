@@ -53,6 +53,7 @@ boxdata<-Fatdata[Xvar]
 par(mar=c(1,1,1,1))
 boxplot(boxdata)
 
+#set the length of the whiskers as 3 multiplying the Inter-quartile range.
 WEIGHT.out <- boxplot.stats(Fatdata$WEIGHT, coef=3)$out
 WEIGHT_index <- which(Fatdata$WEIGHT %in% WEIGHT.out)
 
@@ -94,26 +95,26 @@ WRIST_index <- which(Fatdata$WRIST %in% WRIST.out)
 
 rm_index<-unique(c(WEIGHT_index,HEIGHT_index,ADIPOSITY_index,NECK_index,CHEST_index,ABDOMEN_index,
                    HIP_index,THIGH_index,KNEE_index,ANKLE_index,BICEPS_index,FOREARM_index,WRIST_index))
+
+#remove extreme outliers
 Fatdata_new<-Fatdata[-rm_index,]
 
-
-data_tr<-Fatdata_new[1:200,] # Training set
 nn<-nrow(Fatdata_new)
 n<-nrow(Fatdata)
-dim(Fatdata_new)
-data_te<-Fatdata_new[201:nn,] # Testing set
-dim(data_te)
 
 X<-Fatdata_new[,4:17]
 round(cor(X), 2) # Correlation Test
 BFAT<-Fatdata_new[,2]
 
-
-# Detect existence of multicollinearity
+Fat_lm<-lm(BODYFAT~AGE+WEIGHT+HEIGHT+ADIPOSITY
+              +NECK+CHEST+ABDOMEN+HIP
+              +THIGH+KNEE+ANKLE+BICEPS+FOREARM+WRIST, 
+              data=Fatdata_new)
+# Detect existence of overall multicollinearity
 omcdiag(Fat_lm)
 # Detect individual collinearity
 imcdiag(Fat_lm)
-
+#variance inflation factor for assessing multicollinearity
 vif(Fat_lm)
 
 # All potential lambda values
@@ -125,7 +126,7 @@ XX<-data.matrix(X)
 Fat_ridge <- cv.glmnet(XX, BFAT, alpha = 0, family="gaussian",standardize=TRUE, type.measure="mse")
 summary(Fat_ridge)
 Fat_ridge
-plot(Fat_ridge)
+#plot(Fat_ridge)
 
 opt_lambda <- Fat_ridge$lambda.min
 Fat_fit <- Fat_ridge$glmnet.fit
@@ -138,7 +139,7 @@ mse.min_r
 # Lasso Regression
 Fat_lasso = cv.glmnet(XX, BFAT, alpha = 1,standardize=TRUE) # Fit lasso model on training data
 
-plot(Fat_lasso)    # Draw plot of coefficients
+#plot(Fat_lasso)    # Draw plot of coefficients
 opt_lambda_L <- Fat_lasso$lambda.min
 log(opt_lambda_L)
 Fat_fit_L <- Fat_lasso$glmnet.fit
@@ -146,9 +147,7 @@ coef(Fat_lasso)
 iii_L <- which(Fat_lasso$lambda == Fat_lasso$lambda.min)
 mse.min_L <- Fat_lasso$cvm[iii_L]
 mse.min_L
-
-
-plot(Fat_lasso, xvar = "dev", label = TRUE)
+#plot(Fat_lasso, xvar = "dev", label = TRUE)
 
 
 # Elastic Net Regression
@@ -176,12 +175,11 @@ Fat_elastic <- train(BODYFAT~AGE
 
 # Best tuning parameter
 Fat_elastic$bestTune
-coef(Fat_elastic$finalModel, Fat_elastic$bestTune$lambda)
 best_alpha<-Fat_elastic$bestTune$alpha
 best_lambda<-Fat_elastic$bestTune$lambda
 
 XX_en<-as.matrix(X)
-elastic_mod <- cv.glmnet(XX, BFAT, family = "gaussian", 
+elastic_mod <- cv.glmnet(XX, BFAT, family = "gaussian", standardize=TRUE,
                          alpha = best_alpha)
 coef(elastic_mod)
 elastic_mod$cvm
@@ -189,7 +187,7 @@ iii_en <- which(elastic_mod$lambda == elastic_mod$lambda.min)
 mse.min_en <- elastic_mod$cvm[iii_en]
 mse.min_en
 
-elastic_pred <- predict(elastic_mod, XX, nfolds=20)
+elastic_pred <- predict(elastic_mod, XX, nfolds=10)
 data.frame(
   RMSE = RMSE(elastic_pred, BFAT),
   Rsquare = R2(elastic_pred, BFAT)
