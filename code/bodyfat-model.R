@@ -117,9 +117,6 @@ imcdiag(Fat_lm)
 #variance inflation factor for assessing multicollinearity
 vif(Fat_lm)
 
-# All potential lambda values
-lambdas <- 10^seq(3, -2, by = -.1)
-
 XX<-data.matrix(X)
 
 # Ridge Regression
