@@ -199,12 +199,17 @@ resid_en <- BFAT_fitted - Fatdata_new$BODYFAT
 resid_std_en <- (resid_en - mean(resid_en)) / sd(resid_en)
 
 # Standardized Residual Plot
-par(mfrow = c(1,2))
-plot(x = BFAT_fitted, y = resid_std_en,pch=19,cex=1.2,cex.lab=1.5,cex.main=1.5,
+layout(matrix(data = c(1,1,2,3), nrow = 2, ncol = 2, byrow = T))
+layout.show(3)
+plot(x = BFAT_fitted, y = resid_std_en,pch=19,cex=1.2,cex.lab=1.2,
      xlab="Predicted Body Fat %", ylab="Standardized Residuals",main="Standardized Residual Plot")
 abline(a=0,b=0,col="black",lwd=3)
 
+# Histogram of the Standardized Residuals
+hist(resid_std_en, freq = F, cex.lab = 1.2, 
+     xlab = "Standardized Residuals", main = "Density Hisotgram of Standardized Residuals")
+
 # Normal Q-Q Plot of the Residuals
-qqnorm(resid_std_en,pch=19,cex=1.2,cex.lab=1.5,cex.main=1.5,
-       main="Normal Q-Q Plot of the Residuals")
+qqnorm(resid_std_en,pch=19,cex=0.75,cex.lab=1.2,
+       main="Normal Q-Q Plot of Standardized Residuals")
 abline(a=0,b=1,col="black",lwd=3)
