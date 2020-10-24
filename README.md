@@ -6,7 +6,7 @@ Accurate measurement of body fat is inconvenient/costly and it is desirable to h
 In this project, we want to come up with a simple, robust, and accurate “rule-of-thumb” to estimate percentage of body fat using clinically available measurements. This “rule-of-thumb” is be based on a real data set of 252 men with measurements of their percentage of body fat and various body circumference measurements.
 
 ## Summary
-`xxx.pdf` is an summary of our modeling process.
+`SUMMARY-Stat_628_Module_2.pdf` is an summary of our modeling process.
 
 We firstly removed some outliers by the boxplot and then tested the multi-colinearity. Next, we used three different methods to handle the multi-colinearity and selected the models. Finally, R-squared, residuals and some other assumptions were checked.
 
