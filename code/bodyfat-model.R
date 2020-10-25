@@ -106,6 +106,11 @@ X<-Fatdata_new[,4:17]
 round(cor(X), 2) # Correlation Test
 BFAT<-Fatdata_new[,2]
 
+#plot pair correlation
+install.packages("GGally")
+library(GGally)
+ggpairs(X)
+
 Fat_lm<-lm(BODYFAT~AGE+WEIGHT+HEIGHT+ADIPOSITY
               +NECK+CHEST+ABDOMEN+HIP
               +THIGH+KNEE+ANKLE+BICEPS+FOREARM+WRIST, 
